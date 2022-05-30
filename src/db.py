@@ -82,11 +82,12 @@ def get_sensor_values_from_file(path: str) -> List[str]:
 
 
 if __name__ == "__main__":
-    reading = "".join(get_sensor_values_from_file("data/5_1.csv"))
-    print(reading)
-    for index, dna_sequence in enumerate(DNA_SEQUENCES):
-    # dna_sequence = DNA_SEQUENCES[4]
-        generated_sensor_readings = "".join(generate_fake_reading_from_dna(dna_sequence))
-        print(f"edit distance #{index}: {editdistance.distance(reading, generated_sensor_readings)}")
-        # print(generated_sensor_readings)
+    dna_sequence = DNA_SEQUENCES[4]
+    generated_sensor_readings = "".join(generate_fake_reading_from_dna(dna_sequence))
+    print(generated_sensor_readings)
+    for sequence_index in range(len(DNA_SEQUENCES)):
+        for reading_index in range(3):
+            reading = "".join(get_sensor_values_from_file(f"data/{sequence_index + 1}_{reading_index + 1}.csv"))
+            print(reading)
+            # print(f"edit distance #{sequence_index}: {editdistance.distance(reading, generated_sensor_readings)}")
 
