@@ -12,8 +12,6 @@ DNA_SEQUENCES = [
     "BRGYYGGBBGBGBYYYBGRGYYY",
     "YYBRBBRBYRGGYYGYGRBGG",
     "RBRBRBYBBGYGGGBBYRRGRR",
-
-
     # "BRYBBYRGRR",
 ]
 
@@ -55,7 +53,7 @@ def generate_fake_reading_from_dna(dna: str) -> List:
     for index, value in enumerate(sensor_values):
         roll = random.random()
         if 0.0 <= roll <= Error.DELETE.value:
-            sensor_values[index] = '-'
+            sensor_values[index] = "-"
         elif Error.DELETE.value < roll <= Error.DELETE.value + Error.DUPLICATE.value:
             duplicate_at.append(index)
         elif (
@@ -67,7 +65,7 @@ def generate_fake_reading_from_dna(dna: str) -> List:
     offset = 0
     for index in duplicate_at:
         sensor_values.insert(index, sensor_values[index + offset])
-    return [*filter(lambda x: x != '-', sensor_values)]
+    return [*filter(lambda x: x != "-", sensor_values)]
 
 
 import csv
@@ -81,13 +79,28 @@ def get_sensor_values_from_file(path: str) -> List[str]:
         return [row["Colour"] for row in reader]
 
 
-if __name__ == "__main__":
-    dna_sequence = DNA_SEQUENCES[4]
+def test_sequence(index):
+    # sequence we'll generate a fake signal from compare against our other signals
+    dna_sequence = DNA_SEQUENCES[index]
     generated_sensor_readings = "".join(generate_fake_reading_from_dna(dna_sequence))
-    print(generated_sensor_readings)
-    for sequence_index in range(len(DNA_SEQUENCES)):
-        for reading_index in range(3):
-            reading = "".join(get_sensor_values_from_file(f"data/{sequence_index + 1}_{reading_index + 1}.csv"))
-            print(reading)
-            # print(f"edit distance #{sequence_index}: {editdistance.distance(reading, generated_sensor_readings)}")
+    # print(generated_sensor_readings)
 
+    results = []
+    for sequence_index in range(1, len(DNA_SEQUENCES) + 1):
+        for reading_index in range(1, 4):
+            reading = "".join(
+                get_sensor_values_from_file(
+                    f"data/{sequence_index}_{reading_index}.csv"
+                )
+            )
+            # print(reading)
+            inverse_score = editdistance.distance(reading, generated_sensor_readings) # FIXME: use a passed in scoring function param
+            results.append((sequence_index, inverse_score))
+    results.sort(key=lambda result: result[1])
+    return [result[0] for result in results]
+    # return results
+
+
+if __name__ == "__main__":
+    for i in range(len(DNA_SEQUENCES)):
+        print(f"sequence {i + 1} has results: {test_sequence(i)}")
