@@ -6,6 +6,7 @@ authors = ["Hayaan Hussein Abdi <hayaanhusseinabdi@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.8"
+editdistance = "^0.6.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
