@@ -1,7 +1,9 @@
-from typing import List
 import csv
+from typing import List
 
 import editdistance
+
+from db import generate_vector_from_sequence
 
 DNA_SEQUENCES = [
     "YGYBBGGRGGBRGRGGYBGGGBGGRRB",
@@ -13,33 +15,6 @@ DNA_SEQUENCES = [
     "RBRBRBYBBGYGGGBBYRRGRR",
 ]
 
-BASE_TO_SENSOR_VALUE = {
-    "B": "2",
-    "G": "3",
-    "Y": "4",
-    "R": "5",
-}
-
-NUM_SENSOR_VALUES_PER_BASE = 47
-NUM_STRINGS_PER_SEQUENCE = 5
-
-
-def generate_fake_reading_from_dna(dna: str) -> List:
-    sensor_values: List[int] = []
-    for base in dna:
-        if base not in BASE_TO_SENSOR_VALUE:
-            continue
-        sensor_values.extend([BASE_TO_SENSOR_VALUE[base]] * NUM_SENSOR_VALUES_PER_BASE)
-    return sensor_values
-
-
-def apply_mutations():
-    """
-    apply to vector (of signals) or DNA sequence?
-    :return:
-    """
-    return None
-
 
 def get_sensor_values_from_file(path: str) -> List[str]:
     with open(path) as file:
@@ -50,7 +25,7 @@ def get_sensor_values_from_file(path: str) -> List[str]:
 def test_sequence(index):
     # sequence we'll generate a fake signal from compare against our other signals
     dna_sequence = DNA_SEQUENCES[index]
-    generated_sensor_readings = "".join(generate_fake_reading_from_dna(dna_sequence))
+    generated_sensor_readings = "".join(generate_vector_from_sequence(dna_sequence))
     # print(generated_sensor_readings)
 
     results = []
@@ -68,7 +43,6 @@ def test_sequence(index):
             results.append((sequence_index, inverse_score))
     results.sort(key=lambda result: result[1])
     return [result[0] for result in results]
-    # return results
 
 
 if __name__ == "__main__":
