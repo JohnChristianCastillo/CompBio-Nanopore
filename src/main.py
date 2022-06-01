@@ -6,13 +6,21 @@ import editdistance
 from db import generate_vector_from_sequence
 
 DNA_SEQUENCES = [
-    "YGYBBGGRGGBRGRGGYBGGGBGGRRB",
-    "RBYBYBGBYBRRBBGRRGBBBYYRB",
-    "RRGRBGYGGRBYBGBBYRBRRB",
-    "BGRYGRBGRRGBRYRBBYYG",
-    "BRGYYGGBBGBGBYYYBGRGYYY",
-    "YYBRBBRBYRGGYYGYGRBGG",
-    "RBRBRBYBBGYGGGBBYRRGRR",
+    # "YGYBBGGRGGBRGRGGYBGGGBGGRRB",
+    # "RBYBYBGBYBRRBBGRRGBBBYYRB",
+    # "RRGRBGYGGRBYBGBBYRBRRB",
+    # "BGRYGRBGRRGBRYRBBYYG",
+    # "BRGYYGGBBGBGBYYYBGRGYYY",
+    # "YYBRBBRBYRGGYYGYGRBGG",
+    # "RBRBRBYBBGYGGGBBYRRGRR",
+
+    "CACTTAAGAATGAGAACTAAATAAGGT",
+    "GTCTCTATCTGGTTAGGATTTCCGT",
+    "GGAGTACAAGTCTATTCGTGGT",
+    "TAGCAGTAGGATGCGTTCCA",
+    "TGACCAATTATATCCCTAGACCC",
+    "CCTGTTGTCGAACCACAGTAA",
+    "GTGTGTCTTACAAATTCGGAGG",
 ]
 
 
@@ -42,7 +50,7 @@ def test_sequence(index):
             )  # FIXME: use a passed in scoring function param
             results.append((sequence_index, inverse_score))
     results.sort(key=lambda result: result[1])
-    return [result[0] for result in results]
+    return results
 
 
 if __name__ == "__main__":
