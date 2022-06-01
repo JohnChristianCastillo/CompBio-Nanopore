@@ -50,7 +50,8 @@ def test_sequence(index):
             )  # FIXME: use a passed in scoring function param
             results.append((sequence_index, inverse_score))
     results.sort(key=lambda result: result[1])
-    return results
+    # return results
+    return [result[0] for result in results]
 
 
 if __name__ == "__main__":
