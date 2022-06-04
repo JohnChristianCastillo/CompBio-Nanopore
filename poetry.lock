@@ -27,7 +27,6 @@ description = "bio"
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
 [package.dependencies]
 biopython = ">=1.79"
 mygene = "*"

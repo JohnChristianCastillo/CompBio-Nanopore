@@ -8,6 +8,7 @@ authors = ["Hayaan Hussein Abdi <hayaanhusseinabdi@gmail.com>"]
 python = "^3.8"
 editdistance = "^0.6.0"
 bio = "^1.3.9"
+flask = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
