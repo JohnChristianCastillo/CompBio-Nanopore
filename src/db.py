@@ -43,7 +43,7 @@ def apply_mutations():
 
 
 if __name__ == '__main__':
-    for record in SeqIO.parse("../data/animalBlast.fasta", "fasta"):
+    for record in SeqIO.parse("data/animalBlast.fasta", "fasta"):
         name, binomen = record.id.split('|')
         sequence = record.seq
         print(f"{name},{binomen},{sequence},{''.join(generate_vector_from_sequence(sequence))}")
