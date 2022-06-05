@@ -43,6 +43,8 @@ document.getElementById("chosen_species").addEventListener("click", function(){
         success: function (data){
             document.getElementById('scientific_name').innerHTML = data["scientific_name"]
             document.getElementById('sequence').innerHTML = data["sequence"]
+            document.getElementById('generated_signal_output').innerHTML = "";
+
         },
         error: function (error){
             console.log(error);
