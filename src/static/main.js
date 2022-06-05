@@ -3,7 +3,7 @@
  */
 var dir = $(document).ready(function(){
     $.ajax({
-        url: `http://127.0.0.1:5000/api/species`,
+        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/species`,
         type: "GET",
         success: function (data){
             for(var i = 0; i < data["species"].length; ++i){
@@ -38,11 +38,12 @@ function alphabetizeList(listField) {
 // Clear button click
 document.getElementById("chosen_species").addEventListener("click", function(){
     $.ajax({
-        url: `http://127.0.0.1:5000/api/sequence/${$('#chosen_species').val()}`,
+        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
         type: "GET",
         success: function (data){
             document.getElementById('scientific_name').innerHTML = data["scientific_name"]
             document.getElementById('sequence').innerHTML = data["sequence"]
+            document.getElementById('generated_signal_output').innerHTML = "";
         },
         error: function (error){
             console.log(error);
@@ -56,7 +57,7 @@ document.getElementById("chosen_species").addEventListener("click", function(){
 // Clear button click
 document.getElementById("generate_signal").addEventListener("click", function(){
     $.ajax({
-        url: `http://127.0.0.1:5000/api/sequence/${$('#chosen_species').val()}`,
+        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
         type: "GET",
         success: function (data){
             $('#generate_signal').fitText

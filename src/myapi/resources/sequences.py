@@ -1,5 +1,5 @@
 from flask_restful import Resource, reqparse
-from src.db import *
+from db import *
 
 
 class Sequencer(Resource):
