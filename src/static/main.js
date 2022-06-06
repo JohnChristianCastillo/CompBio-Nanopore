@@ -70,7 +70,6 @@ document.getElementById("chosen_species").addEventListener("click", function(){
 /**
  *  A "Listener" type which helps us detect whether the "generate signal" button has been pressed.
  */
-// Clear button click
 document.getElementById("generate_signal").addEventListener("click", function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
@@ -95,7 +94,6 @@ document.getElementById("generate_matches").addEventListener("click", function()
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/matcher/${$('#chosen_dna').val()}`,
         type: "GET",
         success: function (data){
-            $('#generate_signal').fitText
             for(var i = 0; i < data["matches"].length; ++i){
                 var match = data["matches"][i];
                 var list = document.getElementById("generated_matches_output");
@@ -107,4 +105,13 @@ document.getElementById("generate_matches").addEventListener("click", function()
         }
     })
 })
+
+/**
+ *  A "Listener" type which helps us detect whether a dna sequence has been chosen.
+ */
+// Clear button click
+document.getElementById("chosen_dna").addEventListener("click", function(){
+    document.getElementById("generated_matches_output").innerHTML = "";
+})
+
 
