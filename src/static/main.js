@@ -105,3 +105,11 @@ document.getElementById("generate_matches").addEventListener("click", function()
     })
 })
 
+/**
+ *  A "Listener" type which helps us detect whether a dna sequence has been chosen.
+ */
+// Clear button click
+document.getElementById("chosen_dna").addEventListener("click", function(){
+    document.getElementById("generated_matches_output").innerHTML = "";
+})
+
