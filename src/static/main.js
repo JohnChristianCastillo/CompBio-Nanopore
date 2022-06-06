@@ -4,6 +4,7 @@
 var dir = $(document).ready(function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/species`,
+        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/species`,
         type: "GET",
         success: function (data){
             for(var i = 0; i < data["species"].length; ++i){
@@ -17,7 +18,7 @@ var dir = $(document).ready(function(){
     })
 
     $.ajax({
-        url: `http://127.0.0.1:5000/api/dna`,
+        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/dna`,
         type: "GET",
         success: function (data){
             for(var i = 0; i < data["DNA_SEQUENCES"].length; ++i){
@@ -53,6 +54,7 @@ function alphabetizeList(listField) {
 document.getElementById("chosen_species").addEventListener("click", function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
+        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
         type: "GET",
         success: function (data){
             document.getElementById('scientific_name').innerHTML = data["scientific_name"]
@@ -72,6 +74,7 @@ document.getElementById("chosen_species").addEventListener("click", function(){
 document.getElementById("generate_signal").addEventListener("click", function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
+        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
         type: "GET",
         success: function (data){
             $('#generate_signal').fitText
@@ -89,7 +92,7 @@ document.getElementById("generate_signal").addEventListener("click", function(){
 // Clear button click
 document.getElementById("generate_matches").addEventListener("click", function(){
     $.ajax({
-        url: `http://127.0.0.1:5000/api/matcher/${$('#chosen_dna').val()}`,
+        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/matcher/${$('#chosen_dna').val()}`,
         type: "GET",
         success: function (data){
             $('#generate_signal').fitText
