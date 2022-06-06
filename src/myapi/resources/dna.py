@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from src.main import DNA_SEQUENCES
+from main import DNA_SEQUENCES
 
 
 class DNA(Resource):

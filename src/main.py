@@ -41,7 +41,7 @@ def test_sequence(sequence):
         for reading_index in range(1, 4):
             reading = "".join(
                 get_sensor_values_from_file(
-                    f"data/{sequence_index}_{reading_index}.csv"
+                    f"../data/{sequence_index}_{reading_index}.csv"
                 )
             )
             # print(reading)
