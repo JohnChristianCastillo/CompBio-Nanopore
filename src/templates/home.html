@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+<!-- BODY -->
+{% block content %}
+
+    <div class="container">
+        <div class="row pt-4"></div>
+        <div class="row">
+            <p class="bg-light">
+                This section shows how we generate the signals from a given sequence.
+                This signal is then used later on to find its closest match within our
+                databank.
+            </p>
+        </div>
+        <div class="row ">
+            <div class = "col-12 p-2">
+                <table class="table table-borderless table-hover text-center w-auto p-4">
+                    <tr>
+                        <th scope="col">Species</th>
+                        <th scope="col">Scientific Name</th>
+                        <th scope="col">Sequence</th>
+                        <th scope="col">Signal</th>
+                    </tr>
+                    <tr>
+                        <th scope="row">
+                                <select class="form-control text-center w-auto" name="sort" id="chosen_species">
+                                    <option value="" selected disabled hidden>choose a species</option>
+                                </select>
+                            <td class="p-3" id="scientific_name"> None </td>
+                            <td class="p-3" id="sequence"> None </td>
+                            <td>
+                                <button type="button" class="btn btn-primary" id="generate_signal">generate signal</button>
+                            </td>
+                        </th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="row">
+          <p class="text-break bg-warning" id = "generated_signal_output"></p>
+        </div>
+
+
+        <div class="row pt-4">
+          <p class="text-break bg-light">
+              This section will show how we, given a sequence, will try to find its closest match of a given
+              within our database.
+          </p>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <select class="form-control text-center w-auto" name="sort" id="chosen_dna">
+                    <option value="" selected disabled hidden>choose a DNA sequence</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary" id="generate_matches">find matches</button>
+            </div>
+        </div>
+        <div class="row p-4">
+          <p class="text-break bg-warning">
+              Below is a list of data in our database that matches closely with the given DNA sequence
+              (listed from the closest match to the furthest match)
+          </p>
+        </div>
+        <div class="row text-break">
+            <div class="col-auto">
+                <ol class="text-wrap" id = "generated_matches_output">
+                </ol>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
