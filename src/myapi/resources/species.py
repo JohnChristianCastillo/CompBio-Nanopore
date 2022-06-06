@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from src.db import *
 
 
@@ -7,7 +7,7 @@ class Species(Resource):
         """
         """
         species = []
-        for record in SeqIO.parse("../data/animalBlast.fasta", "fasta"):
+        for record in SeqIO.parse("data/animalBlast.fasta", "fasta"):
             species_name, scientific_name = record.id.split('|')
             species.append(species_name)
         return {"species": species}, 200

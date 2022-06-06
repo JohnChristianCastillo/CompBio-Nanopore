@@ -4,7 +4,7 @@ from src.db import *
 
 class Sequencer(Resource):
     def get(self, species_name):
-        for record in SeqIO.parse("../data/animalBlast.fasta", "fasta"):
+        for record in SeqIO.parse("data/animalBlast.fasta", "fasta"):
             name, scientific_name = record.id.split('|')
             scientific_name = scientific_name.capitalize()
             scientific_name = scientific_name.replace('_', ' ')
@@ -16,5 +16,5 @@ class Sequencer(Resource):
                     "sequence": sequence,
                     "signal": generate_vector_from_sequence(sequence)
                 }, 200
-        return {}, 404
+        return {}, 400
 

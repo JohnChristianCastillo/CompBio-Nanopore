@@ -30,9 +30,9 @@ def get_sensor_values_from_file(path: str) -> List[str]:
         return [row["Colour"] for row in reader]
 
 
-def test_sequence(index):
+def test_sequence(sequence):
     # sequence we'll generate a fake signal from compare against our other signals
-    dna_sequence = DNA_SEQUENCES[index]
+    dna_sequence = sequence
     generated_sensor_readings = "".join(generate_vector_from_sequence(dna_sequence))
     # print(generated_sensor_readings)
 
@@ -55,5 +55,5 @@ def test_sequence(index):
 
 
 if __name__ == "__main__":
-    for i in range(len(DNA_SEQUENCES)):
-        print(f"sequence {i + 1} matches (closest to furthest): {test_sequence(i)}")
+    for sequence in DNA_SEQUENCES:
+        print(f"sequence {sequence} matches (closest to furthest): {test_sequence(sequence)}")

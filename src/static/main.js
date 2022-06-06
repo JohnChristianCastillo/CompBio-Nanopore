@@ -15,6 +15,20 @@ var dir = $(document).ready(function(){
             console.log(error);
         }
     })
+
+    $.ajax({
+        url: `http://127.0.0.1:5000/api/dna`,
+        type: "GET",
+        success: function (data){
+            for(var i = 0; i < data["DNA_SEQUENCES"].length; ++i){
+                $("#chosen_dna").append(new Option(data["DNA_SEQUENCES"][i], data["DNA_SEQUENCES"][i]));
+            }
+            alphabetizeList("#chosen_dna");
+        },
+        error: function (error){
+            console.log(error);
+        }
+    })
 })
 
 /**
@@ -44,7 +58,6 @@ document.getElementById("chosen_species").addEventListener("click", function(){
             document.getElementById('scientific_name').innerHTML = data["scientific_name"]
             document.getElementById('sequence').innerHTML = data["sequence"]
             document.getElementById('generated_signal_output').innerHTML = "";
-
         },
         error: function (error){
             console.log(error);
@@ -63,6 +76,28 @@ document.getElementById("generate_signal").addEventListener("click", function(){
         success: function (data){
             $('#generate_signal').fitText
             document.getElementById('generated_signal_output').innerHTML = data["signal"]
+        },
+        error: function (error){
+            console.log(error);
+        }
+    })
+})
+
+/**
+ *  A "Listener" type which helps us detect whether the "Find matches" button has been pressed.
+ */
+// Clear button click
+document.getElementById("generate_matches").addEventListener("click", function(){
+    $.ajax({
+        url: `http://127.0.0.1:5000/api/matcher/${$('#chosen_dna').val()}`,
+        type: "GET",
+        success: function (data){
+            $('#generate_signal').fitText
+            for(var i = 0; i < data["matches"].length; ++i){
+                var match = data["matches"][i];
+                var list = document.getElementById("generated_matches_output");
+                list.appendChild(document.createElement('li')).appendChild(document.createTextNode(match));
+            }
         },
         error: function (error){
             console.log(error);
