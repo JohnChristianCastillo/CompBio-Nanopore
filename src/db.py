@@ -33,9 +33,9 @@ def generate_vector_from_sequence(sequence: str) -> List[int]:
 
 def apply_errors(
     sequence: List[str],
-    duplicate: float = 0.05,
+    duplicate: float = 0.22,
+    replace: float = 0.10,
     delete: float = 0.05,
-    replace: float = 0.05,
 ):
     duplicate_at = []
     for index, value in enumerate(sequence):
@@ -154,6 +154,10 @@ if __name__ == "__main__":
     init_db(db)
     # print(db)
 
+
+
+    # Mutatie van een bepaalde sequentie demo
+
     # tiger_signal_sequence = db[0][3]
     # print(tiger_signal_sequence)
     # mutated_sequence = "".join(
@@ -174,19 +178,34 @@ if __name__ == "__main__":
     # # print(Levenshtein.distance(tiger_signal_sequence, mutated_sequence))
     # # print(f"{len(tiger_signal_sequence)} vs. {len(mutated_sequence)}")
 
-    for sequence_index in range(1, 8):
-        for reading_index in range(1, 4):
-            unindentified_seq = "".join(
-                [
-                    str(val)
-                    for val in get_sensor_values_from_file(
-                        f"data/{sequence_index}_{reading_index}.csv"
-                    )
-                ]
-            )
 
-            matches = rank_matches(db, unindentified_seq, scorer=Levenshtein.distance)[
-                :3
-            ]
-            print([(match[1], match[0][0]) for match in matches])
-        print()
+
+    # CSV files matchen
+
+    # for sequence_index in range(1, 8):
+    #     for reading_index in range(1, 4):
+    #         unindentified_seq = "".join(
+    #             [
+    #                 str(val)
+    #                 for val in get_sensor_values_from_file(
+    #                     f"data/{sequence_index}_{reading_index}.csv"
+    #                 )
+    #             ]
+    #         )
+    #
+    #         matches = rank_matches(db, unindentified_seq, scorer=Levenshtein.distance)[
+    #             :3
+    #         ]
+    #         print([(match[1], match[0][0]) for match in matches])
+    #     print()
+
+
+
+
+    # Gemuteerde sequenties matchen
+
+    for binomen, mutated_seq  in MUTATED_SIGNALS.items():
+        matches = rank_matches(db, mutated_seq, scorer=Levenshtein.distance)[
+            :3
+        ]
+        print(f"{binomen} matched to: {[(match[1], match[0][1]) for match in matches]}")
