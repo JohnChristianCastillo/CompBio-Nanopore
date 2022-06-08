@@ -19,16 +19,10 @@ BASE_TO_SIGNAL = {
 }
 
 # TODO: calibrate this value by testing against the DNA sequences and CSV files we already have
-# NUM_SENSOR_VALUES_PER_BASE = 47
-NUM_SENSOR_VALUES_PER_BASE = 1
+NUM_SENSOR_VALUES_PER_BASE = 47
 
 
 def generate_vector_from_sequence(sequence: str) -> List[int]:
-    """
-    FIXME: make customisable w.r.t. conversion dict
-    :param sequence:
-    :return:
-    """
     sensor_values = []
     for base in sequence:
         if base not in BASE_TO_SIGNAL:
@@ -46,8 +40,7 @@ def apply_mutations():
 
 
 # num of 10s in a row, we want to see to ltrim
-# TODO: better name
-K: int = 50
+K: int = NUM_SENSOR_VALUES_PER_BASE
 
 
 def get_sensor_values_from_file(path: str) -> list[int]:
@@ -56,35 +49,38 @@ def get_sensor_values_from_file(path: str) -> list[int]:
     with open(path) as file:
         reader = csv.DictReader(file)
         values = [int(float(row["Colour_p4_01"])) for row in reader]
-    # rtrim values
-    # assumes it stops and continues reading 6 when the end of the LEGO sequence
-    # has been reached
-    for val in reversed(values):
-        # if white
-        if val == 6:
-            del values[-1]
-        else:
-            break
-    # run over list while reversed, once you encounter the first chunk of X 6's, slice from that index onwards
-    counter = Counter(values[-K:])
-    # not foolproof but should work for our usecases
-    for index in reversed(range(0, len(values) - K)):
-        if counter[6] == K:
-            print(f"index broken @ {index}")
-            return values[index + K + 1:]
-        counter[values[index + K]] -= 1
-        counter[values[index]] += 1
-    raise ValueError("unable to left trim white blocks from sequence of signals")
+
+    # split in halves, trim both sides
+    def ltrim(values):
+        counter = Counter(values[-K:])
+        # not foolproof but should work for our usecases
+        for index in reversed(range(0, len(values) - K)):
+            if counter[6] == K:
+                return values[index + K + 1:]
+            counter[values[index + K]] -= 1
+            counter[values[index]] += 1
+        raise ValueError("unable to left trim white blocks from sequence of signals")
+
+    midpoint = len(values) // 2  # FIXME: niet altijd een goede schatting van de midpoint
+    left_half, right_half = values[:midpoint], [*reversed(values[midpoint:])]
+    trimmed_left_half, trimmed_right_half = ltrim(left_half), ltrim(right_half)
+    return trimmed_left_half + [*reversed(trimmed_right_half)]
+
+
+def print_db():
+    for record in SeqIO.parse("data/extraAnimalBlastMetNamen.fasta", "fasta"):
+        name, binomen = record.description.split("|")
+        sequence = record.seq
+        print(
+            f"{name},{binomen},{sequence},{''.join(generate_vector_from_sequence(sequence))}"
+        )
 
 
 if __name__ == "__main__":
-    sensor_values = get_sensor_values_from_file("./standard.csv")
-    print(len(sensor_values))
-    print(sensor_values)
+    print_db()
 
-    # # for record in SeqIO.parse("data/animalBlast.fasta", "fasta"):
-    # for record in SeqIO.parse("data/extraAnimalBlast.fasta", "fasta"):
-    #     # name, binomen = record.id.split('|')
-    #     name = record.id
-    #     sequence = record.seq
-    #     print(f"{name},{sequence},{''.join(generate_vector_from_sequence(sequence))}")
+    for sequence_index in range(1, 8):
+        for reading_index in range(1, 4):
+            sensor_values = get_sensor_values_from_file(f"data/{sequence_index}_{reading_index}.csv")
+            print(f"{sequence_index}_{reading_index} --> {len(sensor_values)}")
+            # print(sensor_values)
