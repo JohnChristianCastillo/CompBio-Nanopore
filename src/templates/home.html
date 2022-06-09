@@ -4,7 +4,9 @@
 
     <div class="container">
         <div class="row pt-4"></div>
+
         <div class="row">
+            <h2>Signal generation</h2>
             <p class="bg-light">
                 This section shows how we generate the signals from a given sequence.
                 This signal is then used later on to find its closest match within our
@@ -39,27 +41,41 @@
           <p class="text-break bg-warning" id = "generated_signal_output"></p>
         </div>
 
-
+        <!-- #####################----Mutation----##################################  -->
         <div class="row pt-4">
-          <p class="text-break bg-light">
-              This section will show how we, given a sequence, will try to find its closest match within our database.
-
-          </p>
+            <h2>Signal Mutation</h2>
+            <p class="text-break bg-light">
+                  Given the Species from the previous section, we can generate a signal akin to its original one
+                  that is slightly mutated.
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-auto">
+                <button type="button" class="btn btn-primary" id="generate_mutation">generate mutated signal</button>
+            </div>
+        </div>
+        <div class="row pt-4">
+          <p class="text-break bg-warning" id = "generated_mutation_output"></p>
+        </div>
+        <!-- #############----Matching----########### -->
+        <div class="row pt-4">
+            <h2>Matching</h2>
+            <p class="text-break bg-light">
+                  This section will show how we, given a sequence, will try to find its closest match within our database.
+            </p>
         </div>
         <div class="row">
             <div class="col-auto">
                 <select class="form-control text-center w-auto" name="sort" id="chosen_dna">
-                    <option value="" selected disabled hidden>choose a DNA sequence</option>
+                    <option value="" selected disabled hidden>choose a mutated species</option>
                 </select>
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-primary" id="generate_matches">find matches</button>
             </div>
         </div>
-        <div class="row p-4">
-          <p class="text-break bg-warning">
-              Below is a list of data in our database that matches closely with the given DNA sequence
-              (listed from the closest match to the furthest match)
+        <div class="row pt-4">
+          <p class="text-break bg-warning" id="matches_info">
           </p>
         </div>
         <div class="row text-break">
@@ -67,7 +83,6 @@
                 <ol class="text-wrap" id = "generated_matches_output">
                 </ol>
             </div>
-
         </div>
     </div>
 {% endblock %}
