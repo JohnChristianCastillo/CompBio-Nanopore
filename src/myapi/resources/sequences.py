@@ -1,4 +1,4 @@
-from flask_restful import Resource, reqparse
+from flask_restful import Resource
 from db import *
 
 
@@ -14,7 +14,7 @@ class Sequencer(Resource):
                     "species": name,
                     "scientific_name": scientific_name,
                     "sequence": sequence,
-                    "signal": generate_vector_from_sequence(sequence)
+                    "signal": ''.join(str(e) for e in (generate_vector_from_sequence(sequence)))
                 }, 200
         return {}, 400
 

@@ -4,7 +4,7 @@
 var dir = $(document).ready(function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/species`,
-        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/species`,
+        //url: `http://127.0.0.1:5000/api/species`,
         type: "GET",
         success: function (data){
             for(var i = 0; i < data["species"].length; ++i){
@@ -18,11 +18,12 @@ var dir = $(document).ready(function(){
     })
 
     $.ajax({
-        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/dna`,
+        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/mutatedDNA`,
+        //url: `http://127.0.0.1:5000/api/mutatedDNA`,
         type: "GET",
         success: function (data){
-            for(var i = 0; i < data["DNA_SEQUENCES"].length; ++i){
-                $("#chosen_dna").append(new Option(data["DNA_SEQUENCES"][i], data["DNA_SEQUENCES"][i]));
+            for(var i = 0; i < data["MUTATED_DNA_SEQUENCES"].length; ++i){
+                $("#chosen_dna").append(new Option(data["MUTATED_DNA_SEQUENCES"][i], data["MUTATED_DNA_SEQUENCES"][i]));
             }
             alphabetizeList("#chosen_dna");
         },
@@ -44,7 +45,8 @@ function alphabetizeList(listField) {
         return $(a).text() > $(b).text() ? 1 : -1;
     });
     sel.html('').append(opts_list);
-    sel.val(selected); // set cached selected value
+    sel.val        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
+(selected); // set cached selected value
 }
 
 /**
@@ -54,12 +56,14 @@ function alphabetizeList(listField) {
 document.getElementById("chosen_species").addEventListener("click", function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
-        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
+        //url: `http://127.0.0.1:5000/api/sequence/${$('#chosen_species').val()}`,
         type: "GET",
         success: function (data){
             document.getElementById('scientific_name').innerHTML = data["scientific_name"]
             document.getElementById('sequence').innerHTML = data["sequence"]
             document.getElementById('generated_signal_output').innerHTML = "";
+            document.getElementById("generated_mutation_output").innerHTML = "";
+
         },
         error: function (error){
             console.log(error);
@@ -73,7 +77,7 @@ document.getElementById("chosen_species").addEventListener("click", function(){
 document.getElementById("generate_signal").addEventListener("click", function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
-        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
+        //url: `http://127.0.0.1:5000/api/sequence/${$('#chosen_species').val()}`,
         type: "GET",
         success: function (data){
             $('#generate_signal').fitText
@@ -91,9 +95,12 @@ document.getElementById("generate_signal").addEventListener("click", function(){
 // Clear button click
 document.getElementById("generate_matches").addEventListener("click", function(){
     $.ajax({
-        url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/matcher/${$('#chosen_dna').val()}`,
+        url: encodeURI(`https://CompBio-Nanopore.johnchristianca.repl.co/api/matcher/${$('#chosen_dna').val()}`),
         type: "GET",
         success: function (data){
+            $('#generate_signal').fitText
+            document.getElementById("matches_info").innerHTML = "Below is a list of data in our database that matches closely with the given DNA sequence\n" +
+                "              (listed from the closest match to the furthest match)";
             for(var i = 0; i < data["matches"].length; ++i){
                 var match = data["matches"][i];
                 var list = document.getElementById("generated_matches_output");
@@ -112,6 +119,26 @@ document.getElementById("generate_matches").addEventListener("click", function()
 // Clear button click
 document.getElementById("chosen_dna").addEventListener("click", function(){
     document.getElementById("generated_matches_output").innerHTML = "";
+
 })
 
+
+/**
+ *  A "Listener" type which helps us detect whether the "Find matches" button has been pressed.
+ */
+// Clear button click
+document.getElementById("generate_mutation").addEventListener("click", function(){
+    var param = $('#generated_signal_output').text();
+    $.ajax({
+        url: encodeURI(`http://127.0.0.1:5000/api/mutator/`+param),
+        type: "GET",
+        success: function (data){
+            console.log(data);
+            document.getElementById('generated_mutation_output').innerHTML = data["mutated_DNA"]
+        },
+        error: function (error){
+            console.log(error);
+        }
+    })
+})
 
