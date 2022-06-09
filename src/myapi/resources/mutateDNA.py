@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from src.db import apply_errors
+from db import apply_errors
 
 
 class Mutator(Resource):

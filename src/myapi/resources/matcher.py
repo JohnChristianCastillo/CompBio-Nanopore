@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from src.db import MUTATED_SIGNALS, rank_matches, db, Levenshtein
+from db import MUTATED_SIGNALS, rank_matches, db, Levenshtein
 
 
 class Matcher(Resource):

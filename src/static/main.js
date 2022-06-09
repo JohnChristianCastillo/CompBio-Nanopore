@@ -130,7 +130,7 @@ document.getElementById("chosen_dna").addEventListener("click", function(){
 document.getElementById("generate_mutation").addEventListener("click", function(){
     var param = $('#generated_signal_output').text();
     $.ajax({
-        url: encodeURI(`http://127.0.0.1:5000/api/mutator/`+param),
+        url: encodeURI(`https://CompBio-Nanopore.johnchristianca.repl.co/api/mutator/`+param),
         type: "GET",
         success: function (data){
             console.log(data);

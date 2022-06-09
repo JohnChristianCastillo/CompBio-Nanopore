@@ -83,7 +83,7 @@ def get_sensor_values_from_file(path: str) -> List[int]:
 
 
 def init_db(db: list):
-    for record in SeqIO.parse("data/extraAnimalBlastMetNamen.fasta", "fasta"):
+    for record in SeqIO.parse("../data/extraAnimalBlastMetNamen.fasta", "fasta"):
         name, binomen = record.description.split("|")
         sequence = record.seq
         db.append(

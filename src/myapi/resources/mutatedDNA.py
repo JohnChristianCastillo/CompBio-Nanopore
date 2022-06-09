@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from src.db import MUTATED_SIGNALS
+from db import MUTATED_SIGNALS
 
 
 class MutatedDNA(Resource):
