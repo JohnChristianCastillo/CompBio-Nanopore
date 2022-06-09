@@ -1,6 +1,4 @@
 from flask_restful import Resource
-from flask import request
-import requests
 from src.db import apply_errors
 
 
