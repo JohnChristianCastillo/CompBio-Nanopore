@@ -92,7 +92,7 @@ document.getElementById("generate_signal").addEventListener("click", function(){
 // Clear button click
 document.getElementById("generate_matches").addEventListener("click", function(){
     $.ajax({
-        url: encodeURI(`http://127.0.0.1:5000/api/matcher/${$('#chosen_dna').val()}`),
+        url: encodeURI(`http://127.0.0.1:5000/api/matcher/species/${$('#chosen_dna').val()}`),
         type: "GET",
         success: function (data){
             $('#generate_signal').fitText
