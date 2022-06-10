@@ -45,8 +45,7 @@ function alphabetizeList(listField) {
         return $(a).text() > $(b).text() ? 1 : -1;
     });
     sel.html('').append(opts_list);
-    sel.val        //url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
-(selected); // set cached selected value
+    sel.val(selected); // set cached selected value
 }
 
 /**
@@ -95,7 +94,7 @@ document.getElementById("generate_signal").addEventListener("click", function(){
 // Clear button click
 document.getElementById("generate_matches").addEventListener("click", function(){
     $.ajax({
-        url: encodeURI(`https://CompBio-Nanopore.johnchristianca.repl.co/api/matcher/${$('#chosen_dna').val()}`),
+        url: encodeURI(`https://CompBio-Nanopore.johnchristianca.repl.co/api/matcher/species/${$('#chosen_dna').val()}`),
         type: "GET",
         success: function (data){
             $('#generate_signal').fitText
