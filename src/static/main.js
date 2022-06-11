@@ -52,7 +52,7 @@ function alphabetizeList(listField) {
  *  A "Listener" type which helps us detect whether a species has been chosen.
  */
 // Clear button click
-document.getElementById("chosen_species").addEventListener("click", function(){
+document.getElementById("chosen_species").addEventListener("change", function(){
     $.ajax({
         url: `https://CompBio-Nanopore.johnchristianca.repl.co/api/sequence/${$('#chosen_species').val()}`,
         //url: `http://127.0.0.1:5000/api/sequence/${$('#chosen_species').val()}`,
@@ -116,9 +116,8 @@ document.getElementById("generate_matches").addEventListener("click", function()
  *  A "Listener" type which helps us detect whether a dna sequence has been chosen.
  */
 // Clear button click
-document.getElementById("chosen_dna").addEventListener("click", function(){
+document.getElementById("chosen_dna").addEventListener("change", function(){
     document.getElementById("generated_matches_output").innerHTML = "";
-
 })
 
 
