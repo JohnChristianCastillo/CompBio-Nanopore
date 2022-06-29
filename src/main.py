@@ -1,45 +1,59 @@
-color_code_dict = {'2': 'B',
-                   '3': 'G',
-                   '4': 'Y',
-                   '5': 'R',
-                   '7': '',
-                   '6': '',
-                   '1': ''}
-if __name__ == '__main__':
-    import csv
-    loc = 45
-    time = 0.010
-    timeBetweenBlocks = 0
+import csv
+from typing import List
 
-    output = ""
-    with open("../data/4_1.csv") as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
-        next(reader) # skip first row
+import editdistance
 
-        next(reader)  # skip next row
-        prev = 0
-        timeAfterTimeout = 0
-        for row in reader:
-            # if timer times out
-            if timeBetweenBlocks == 0:
-                timeBetweenBlocks = time * loc
-                output += color_code_dict[row[1][0]]
-                prev = row[1]
-            # if we encounter a new color
-            elif prev != row[1]:
-                # if we encounter it moments after we added one
-                if timeAfterTimeout < 0.020:
-                    output = output[:-1]  # remove last char
-                    # reset timer
-                    timeAfterTimeout = 0
-                # if we just encountered a new one
-                output += color_code_dict[row[1][0]]
-                timeBetweenBlocks = time * loc
-                # update the prev
-                prev = row[1]
+from db import generate_vector_from_sequence
 
-            timeBetweenBlocks -= 0.010
-            timeAfterTimeout += 0.010
-            # print(', '.join(row))
+DNA_SEQUENCES = [
+    # "YGYBBGGRGGBRGRGGYBGGGBGGRRB",
+    # "RBYBYBGBYBRRBBGRRGBBBYYRB",
+    # "RRGRBGYGGRBYBGBBYRBRRB",
+    # "BGRYGRBGRRGBRYRBBYYG",
+    # "BRGYYGGBBGBGBYYYBGRGYYY",
+    # "YYBRBBRBYRGGYYGYGRBGG",
+    # "RBRBRBYBBGYGGGBBYRRGRR",
 
-    print(output)
+    "CACTTAAGAATGAGAACTAAATAAGGT",
+    "GTCTCTATCTGGTTAGGATTTCCGT",
+    "GGAGTACAAGTCTATTCGTGGT",
+    "TAGCAGTAGGATGCGTTCCA",
+    "TGACCAATTATATCCCTAGACCC",
+    "CCTGTTGTCGAACCACAGTAA",
+    "GTGTGTCTTACAAATTCGGAGG",
+]
+
+
+def get_sensor_values_from_file(path: str) -> List[str]:
+    with open(path) as file:
+        reader = csv.DictReader(file)
+        return [row["Colour"] for row in reader]
+
+
+def test_sequence(index):
+    # sequence we'll generate a fake signal from compare against our other signals
+    dna_sequence = DNA_SEQUENCES[index]
+    generated_sensor_readings = "".join(generate_vector_from_sequence(dna_sequence))
+    # print(generated_sensor_readings)
+
+    results = []
+    for sequence_index in range(1, len(DNA_SEQUENCES) + 1):
+        for reading_index in range(1, 4):
+            reading = "".join(
+                get_sensor_values_from_file(
+                    f"data/{sequence_index}_{reading_index}.csv"
+                )
+            )
+            # print(reading)
+            inverse_score = editdistance.distance(
+                reading, generated_sensor_readings
+            )  # FIXME: use a passed in scoring function param
+            results.append((sequence_index, inverse_score))
+    results.sort(key=lambda result: result[1])
+    # return results
+    return [result[0] for result in results]
+
+
+if __name__ == "__main__":
+    for i in range(len(DNA_SEQUENCES)):
+        print(f"sequence {i + 1} matches (closest to furthest): {test_sequence(i)}")
